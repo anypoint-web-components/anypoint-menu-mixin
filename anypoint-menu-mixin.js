@@ -110,7 +110,6 @@ export const AnypointMenuMixin = (base) => class extends AnypointMultiSelectable
   constructor() {
     super();
     this._previousTabIndex = 0;
-    this.disabled = false;
 
     this._onFocus = this._onFocus.bind(this);
     this._onKeydown = this._onKeydown.bind(this);
@@ -128,6 +127,10 @@ export const AnypointMenuMixin = (base) => class extends AnypointMultiSelectable
     this.addEventListener('focus', this._onFocus);
     this.addEventListener('keydown', this._onKeydown);
     this.addEventListener('children-changed', this._onItemsChanged);
+
+    if (this._disabled === undefined) {
+      this.disabled = false;
+    }
 
     this._resetTabindices();
   }
