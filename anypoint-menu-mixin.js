@@ -1,4 +1,5 @@
-import { AnypointMultiSelectableMixin } from '@anypoint-web-components/anypoint-selector/anypoint-multi-selectable-mixin.js';
+import { AnypointMultiSelectableMixin }
+  from '@anypoint-web-components/anypoint-selector/anypoint-multi-selectable-mixin.js';
 /**
  * The list of keys has been taken from
  * https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/getModifierState
@@ -156,7 +157,7 @@ export const AnypointMenuMixin = (base) => class extends AnypointMultiSelectable
 
   _onItemsChanged(e) {
     const mutationsList = e.detail;
-    for(let mutation of mutationsList) {
+    for(const mutation of mutationsList) {
       if (mutation.type === 'childList' && mutation.addedNodes.length) {
         this._resetTabindices();
       }
