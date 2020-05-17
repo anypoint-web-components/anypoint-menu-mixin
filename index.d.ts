@@ -1,5 +1,5 @@
-import { MenuMixin } from './src/MenuMixin.js';
-import { MenubarMixin } from './src/MenubarMixin.js';
+import { MenuMixin } from './src/MenuMixin';
+import { MenubarMixin } from './src/MenubarMixin';
 
 export { MenubarMixin, MenubarMixin as AnypointMenubarMixin };
 export { MenuMixin, MenuMixin as AnypointMenuMixin };

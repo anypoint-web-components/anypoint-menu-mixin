@@ -1,6 +1,6 @@
 [![Published on NPM](https://img.shields.io/npm/v/@anypoint-web-components/anypoint-menu-mixin.svg)](https://www.npmjs.com/package/@anypoint-web-components/anypoint-menu-mixin)
 
-[![Build Status](https://travis-ci.org/anypoint-web-components/anypoint-menu-mixin.svg?branch=stage)](https://travis-ci.org/anypoint-web-components/anypoint-menu-mixin)
+[![Build Status](https://travis-ci.com/anypoint-web-components/anypoint-menu-mixin.svg)](https://travis-ci.com/anypoint-web-components/anypoint-menu-mixin)
 
 [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/anypoint-web-components/anypoint-menu-mixin)
 
@@ -9,24 +9,24 @@
 This is a port of [iron-menu-behavior](https://github.com/PolymerElements/iron-menu-behavior) that works with LitElement and ES6 classes, originally developed by the Polymer team.
 
 
-## `AnypointMenuMixin` and `AnypointMenubarMixin`
+## `MenuMixin` and `MenubarMixin`
 
-`AnypointMenuMixin` and `AnypointMenubarMixin` implement accessible menu and menubar behaviors.
+`MenuMixin` and `MenubarMixin` implement accessible menu and menubar mixins.
 
 ## Usage
 
 ### Installation
 ```
-npm install --save @anypoint-web-components/anypoint-menu-mixin
+npm install @anypoint-web-components/anypoint-menu-mixin --save
 ```
 
 ### In a LitElement template
 
 ```javascript
 import { LitElement, html } from 'lit-element';
-import { AnypointMenuMixin } from '@anypoint-web-components/anypoint-menu-mixin/anypoint-menu-mixin.js';
+import { MenuMixin } from '@anypoint-web-components/anypoint-menu-mixin';
 
-class SimpleMenu extends AnypointMenuMixin(LitElement) {
+class SimpleMenu extends MenuMixin(LitElement) {
   static get styles() {
     return css`
     :host > ::slotted(.selected) {
@@ -91,7 +91,7 @@ The mixin sets default role to the implementing element of "menu" and "menubar".
 </tabs-implementation>
 ```
 
-### Development
+## Development
 
 ```sh
 git clone https://github.com/anypoint-web-components/anypoint-menu-mixin
