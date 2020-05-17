@@ -1,4 +1,5 @@
-declare function MenuMixin<T extends new (...args: any[]) => {}>(base: T): T & MenuMixinConstructor;
+import { MultiSelectableMixinConstructor } from '@anypoint-web-components/anypoint-selector/src/MultiSelectableMixin';
+declare function MenuMixin<T extends new (...args: any[]) => {}>(base: T): T & MultiSelectableMixinConstructor & MenuMixinConstructor;
 interface MenuMixinConstructor {
   new(...args: any[]): MenuMixin;
 }
