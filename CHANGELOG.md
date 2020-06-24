@@ -40,3 +40,18 @@
 * upgrading to open-wc standard [62e83ca](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/62e83cad88c6bed3c6a786d8ea1e3575da19cf06) by Pawel
 
 
+<a name="1.1.2"></a>
+## [1.1.2](https://github.com/anypoint-web-components/anypoint-menu-mixin/compare/1.1.0...1.1.2) (2020-06-24)
+
+### Update
+
+* [ci skip] automated merge master->stage. syncing main branches [e4941c8](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/e4941c8556ad80bc64dd5c2b7a937de7003e6816) by Ci agent
+* fixing MenuMixin type constructor declaration [2d427ef](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/2d427efc50c211139d5be066106799eb45486844) by Pawel
+* [ci skip] automated merge master->stage. syncing main branches [b0655bc](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/b0655bcd44a7803d94c1c34db4137799b7630483) by Ci agent
+
+
+### Bug Fixes
+
+* fixing types declaration [80f14f9](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/80f14f9824d6e838e5e9354c3401939247bb0583) by Pawel
+
+
