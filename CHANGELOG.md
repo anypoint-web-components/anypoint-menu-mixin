@@ -55,3 +55,27 @@
 * fixing types declaration [80f14f9](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/80f14f9824d6e838e5e9354c3401939247bb0583) by Pawel
 
 
+<a name="1.1.3"></a>
+## [1.1.3](https://github.com/anypoint-web-components/anypoint-menu-mixin/compare/1.1.1...1.1.3) (2020-06-24)
+
+### Build
+
+* bumping version [cb28f24](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/cb28f2466052e8fca3f7463c3c721d10cd171a93) by Pawel
+
+
+### Update
+
+* [ci skip] automated merge master->stage. syncing main branches [3bb4576](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/3bb4576744a571927b0053ad9ccfaa7fc44deaa1) by Ci agent
+* [ci skip] automated merge master->stage. syncing main branches [e4941c8](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/e4941c8556ad80bc64dd5c2b7a937de7003e6816) by Ci agent
+
+
+### Features
+
+* adding highlighting functions [299971f](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/299971fa6d74c8d964c319f5dc843111e8cbd65f) by Pawel
+
+
+### Bug Fixes
+
+* fixing types declaration [80f14f9](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/80f14f9824d6e838e5e9354c3401939247bb0583) by Pawel
+
+
