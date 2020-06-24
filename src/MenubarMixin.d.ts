@@ -1,6 +1,8 @@
 import { MenuMixinConstructor } from './MenuMixin';
+import { MultiSelectableMixinConstructor } from '@anypoint-web-components/anypoint-selector/src/MultiSelectableMixin';
+import { SelectableMixinConstructor } from '@anypoint-web-components/anypoint-selector/src/SelectableMixin';
 
-declare function MenubarMixin<T extends new (...args: any[]) => {}>(base: T): T & MenuMixinConstructor & MenubarMixinConstructor;
+declare function MenubarMixin<T extends new (...args: any[]) => {}>(base: T): T & MenuMixinConstructor & MultiSelectableMixinConstructor & SelectableMixinConstructor & MenubarMixinConstructor;
 interface MenubarMixinConstructor {
   new(...args: any[]): MenubarMixin;
 }

@@ -1,20 +1,22 @@
 import { LitElement, html, css } from 'lit-element';
-import { AnypointMenuMixin } from '../anypoint-menu-mixin.js';
+import { MenuMixin } from '../index.js';
 
-class SimpleMenu extends AnypointMenuMixin(LitElement) {
+class SimpleMenu extends MenuMixin(LitElement) {
   static get styles() {
-    return css`:host > ::slotted(a) {
-      display: block;
-    }
+    return css`
+      :host > ::slotted(a) {
+        display: block;
+      }
 
-    :host > ::slotted(.selected) {
-      color: white;
-      background-color: #2196F3;
-    }
+      :host > ::slotted(.selected) {
+        color: white;
+        background-color: #2196f3;
+      }
 
-    :host > ::slotted([disabled]) {
-      pointer-events: none;
-    }`;
+      :host > ::slotted([disabled]) {
+        pointer-events: none;
+      }
+    `;
   }
 
   render() {

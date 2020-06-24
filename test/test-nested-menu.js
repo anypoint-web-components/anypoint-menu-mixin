@@ -1,14 +1,14 @@
 import { LitElement, html, css } from 'lit-element';
-import { AnypointMenuMixin } from '../anypoint-menu-mixin.js';
+import { MenuMixin } from '../index.js';
 import './test-menu.js';
 
-class TestNestedMenu extends AnypointMenuMixin(LitElement) {
+class TestNestedMenu extends MenuMixin(LitElement) {
   static get styles() {
     return css`
       div {
         display: block;
       }
-      
+
       .ghost,
       [hidden] {
         display: none !important;
@@ -26,15 +26,15 @@ class TestNestedMenu extends AnypointMenuMixin(LitElement) {
 
   render() {
     return html`
-    <test-menu class="actualMenu">
-      <div>item 1</div>
-      <div hidden>item 2</div>
-      <div class="ghost">item 3</div>
-      <div class="invisible">item 3.1</div>
-      <div>item 4</div>
-      <div hidden>item 5</div>
-      <div class="ghost">item 6</div>
-    </test-menu>
+      <test-menu class="actualMenu">
+        <div>item 1</div>
+        <div hidden>item 2</div>
+        <div class="ghost">item 3</div>
+        <div class="invisible">item 3.1</div>
+        <div>item 4</div>
+        <div hidden>item 5</div>
+        <div class="ghost">item 6</div>
+      </test-menu>
     `;
   }
 }

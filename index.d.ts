@@ -1,5 +1,5 @@
 import { MenuMixin } from './src/MenuMixin';
-import { MenubarMixin } from './src/MenubarMixin';
+import { MenubarMixin, MenubarMixinConstructor } from './src/MenubarMixin';
 
-export { MenubarMixin, MenubarMixin as AnypointMenubarMixin };
+export { MenubarMixin, MenubarMixin as AnypointMenubarMixin, MenubarMixinConstructor };
 export { MenuMixin, MenuMixin as AnypointMenuMixin };

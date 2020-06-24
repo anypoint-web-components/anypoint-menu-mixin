@@ -1,2 +1,2 @@
 // left for compatibility
-export { MenuMixin as AnypointMenuMixin } from './src/MenuMixin';
+export { MenuMixin as AnypointMenuMixin, MenuMixinConstructor } from './src/MenuMixin';

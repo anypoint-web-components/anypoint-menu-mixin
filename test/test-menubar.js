@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit-element';
-import { AnypointMenubarMixin } from '../anypoint-menubar-mixin.js';
+import { MenubarMixin } from '../index.js';
 
-class TestMenubar extends AnypointMenubarMixin(LitElement) {
+class TestMenubar extends MenubarMixin(LitElement) {
   get extraContent() {
     return this.shadowRoot.querySelector('.extraContent');
   }
