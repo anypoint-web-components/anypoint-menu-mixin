@@ -11,7 +11,8 @@ This is a port of [iron-menu-behavior](https://github.com/PolymerElements/iron-m
 
 ## `MenuMixin` and `MenubarMixin`
 
-`MenuMixin` and `MenubarMixin` implement accessible menu and menubar mixins.
+`MenuMixin` and `MenubarMixin` implement accessible menu and menu bar mixins.
+The mixins extends `MultiSelectableMixin` from `@anypoint-web-components/anypoint-selector` package.
 
 ## Usage
 

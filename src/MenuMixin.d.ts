@@ -6,11 +6,18 @@ interface MenuMixinConstructor {
   new(...args: any[]): MenuMixin;
 }
 
+export declare const highlightedItem: symbol;
+export declare const highlightedItemValue: symbol;
+
 interface MenuMixin {
   /**
    * Currenlty focused in the menu item.
    */
   readonly focusedItem?: HTMLElement;
+  /**
+   * Currently highlighted item.
+   */
+  readonly highlightedItem: HTMLElement;
 
   _focusedItem?: HTMLElement;
 
@@ -85,9 +92,38 @@ interface MenuMixin {
    * @param value the value to select.
    */
   select(value: string|number): void;
-  _focusPrevious(): void;
-  _focusNext(): void;
 
+  /**
+   * Focuses the previous item (relative to the currently focused item) in the
+   * menu, disabled items will be skipped.
+   * Loop until length + 1 to handle case of single item in menu.
+   */
+  focusPrevious(): void;
+  /**
+   * Focuses the next item (relative to the currently focused item) in the
+   * menu, disabled items will be skipped.
+   */
+  focusNext(): void;
+  /**
+   * @deprecated Please, use `focusPrevious()` instead.
+   */
+  _focusPrevious(): void;
+  /**
+   * @deprecated Please, use `focusNext()` instead.
+   */
+  _focusNext(): void;
+  /**
+   * Highlights, by setting the `highlight` css class, the next availabl element.
+   * If there's no highlighted item but there is a selection (focused item)
+   * then a next item after the selection is selected.
+   */
+  highlightNext(): void;
+  /**
+   * Highlights, by setting the `highlight` css class, the previous availabl element.
+   * If there's no highlighted item but there is a selection (focused item)
+   * then a previous item before the selection is selected.
+   */
+  highlightPrevious(): void;
   /**
    * Mutates items in the menu based on provided selection details, so that
    * all items correctly reflect selection state.

@@ -3,6 +3,10 @@ import * as MockInteractions from '@polymer/iron-test-helpers/mock-interactions.
 import './test-menu.js';
 import './test-nested-menu.js';
 
+/** @typedef {import('./test-menu.js').TestMenu} TestMenu */
+
+/* eslint-disable no-plusplus */
+
 const style = document.createElement('style');
 style.innerHTML = `.ghost, [hidden] {
   display: none;
@@ -13,22 +17,31 @@ style.innerHTML = `.ghost, [hidden] {
 document.head.appendChild(style);
 
 describe('AnypointMenuMixin', () => {
+  /**
+   * @return {Promise<TestMenu>}
+   */
   async function basicFixture() {
-    return await fixture(`<test-menu>
+    return fixture(`<test-menu>
       <div role="menuitem">item 1</div>
       <div role="menuitem">item 2</div>
       <div role="menuitem">item 3</div>
     </test-menu>`);
   }
 
+  /**
+   * @return {Promise<TestMenu>}
+   */
   async function singleItenFixture() {
-    return await fixture(`<test-menu>
+    return fixture(`<test-menu>
       <div>item 1</div>
     </test-menu>`);
   }
 
+  /**
+   * @return {Promise<TestMenu>}
+   */
   async function disabledFixture() {
-    return await fixture(`<test-menu>
+    return fixture(`<test-menu>
       <div>a item 1</div>
       <div disabled>item 2</div>
       <div>b item 3</div>
@@ -36,8 +49,11 @@ describe('AnypointMenuMixin', () => {
     </test-menu>`);
   }
 
+  /**
+   * @return {Promise<TestMenu>}
+   */
   async function invisibleFixture() {
-    return await fixture(`<test-menu>
+    return fixture(`<test-menu>
       <div>item 1</div>
       <div hidden>item 2</div>
       <div class="ghost">item 3</div>
@@ -49,28 +65,34 @@ describe('AnypointMenuMixin', () => {
   }
 
   async function nestedInvisibleFixture() {
-    return await fixture(`
+    return fixture(`
       <test-nested-menu>
       </test-nested-menu>
   `);
   }
 
+  /**
+   * @return {Promise<TestMenu>}
+   */
   async function onlyDisabledFixture() {
-    return await fixture(`<test-menu>
+    return fixture(`<test-menu>
       <div disabled>disabled item</div>
     </test-menu>`);
   }
 
   async function multiFixture() {
-    return await fixture(`<test-menu multi>
+    return fixture(`<test-menu multi>
       <div>item 1</div>
       <div>item 2</div>
       <div>item 3</div>
     </test-menu>`);
   }
 
+  /**
+   * @return {Promise<TestMenu>}
+   */
   async function nestedFixture() {
-    return await fixture(`<test-menu>
+    return fixture(`<test-menu>
       <test-menu>
         <div>item 1</div>
         <div>item 2</div>
@@ -79,40 +101,58 @@ describe('AnypointMenuMixin', () => {
     </test-menu>`);
   }
 
+  /**
+   * @return {Promise<TestMenu>}
+   */
   async function emptyFixture() {
-    return await fixture(`<test-menu></test-menu>`);
+    return fixture(`<test-menu></test-menu>`);
   }
 
+  /**
+   * @return {Promise<TestMenu>}
+   */
   async function disabledGroupAndOptionsFixture() {
-    return await fixture(`<test-menu disabled>
+    return fixture(`<test-menu disabled>
       <div disabled>one</div>
       <div disabled>two</div>
     </test-menu>`);
   }
 
+  /**
+   * @return {Promise<TestMenu>}
+   */
   async function nonzeroTabindexFixture() {
-    return await fixture(`<test-menu tabindex="32">
+    return fixture(`<test-menu tabindex="32">
       <div disabled>one</div>
       <div disabled>two</div>
     </test-menu>`);
   }
 
+  /**
+   * @return {Promise<TestMenu>}
+   */
   async function countriesFixture() {
-    return await fixture(`<test-menu>
+    return fixture(`<test-menu>
       <div>Ghana</div>
       <div>Uganda</div>
     </test-menu>`);
   }
 
+  /**
+   * @return {Promise<TestMenu>}
+   */
   async function bogusAttrForItemTitleFixture() {
-    return await fixture(`<test-menu attrforitemtitle="totally-doesnt-exist">
+    return fixture(`<test-menu attrforitemtitle="totally-doesnt-exist">
       <div>Focused by default</div>
       <div>I'm not entitled!</div>
     </test-menu>`);
   }
 
+  /**
+   * @return {Promise<TestMenu>}
+   */
   async function useAriaSelectedFixture() {
-    return await fixture(`<test-menu useariaselected>
+    return fixture(`<test-menu useariaselected>
       <div>item 1</div>
       <div>item 2</div>
     </test-menu>`);
@@ -127,64 +167,84 @@ describe('AnypointMenuMixin', () => {
     it('first item gets focus when menu is focused', async () => {
       const menu = await basicFixture();
       MockInteractions.focus(menu);
-      await aTimeout();
-      const ownerRoot = (menu.firstElementChild.getRootNode && menu.firstElementChild.getRootNode()) || document;
-      const activeElement = ownerRoot.activeElement;
-      assert.equal(activeElement, menu.firstElementChild, 'menu.firstElementChild is focused');
+      await aTimeout(0);
+      const ownerRoot =
+        (menu.firstElementChild.getRootNode &&
+          menu.firstElementChild.getRootNode()) ||
+        document;
+      const { activeElement } = ownerRoot;
+      assert.equal(
+        activeElement,
+        menu.firstElementChild,
+        'menu.firstElementChild is focused'
+      );
     });
 
     it('first item gets focus when menu is focused in a single item menu', async () => {
       const menu = await singleItenFixture();
       MockInteractions.focus(menu);
-      await aTimeout();
-      const ownerRoot = (menu.firstElementChild.getRootNode && menu.firstElementChild.getRootNode()) || document;
-      let activeElement = ownerRoot.activeElement;
-      assert.equal(activeElement, menu.firstElementChild, 'menu.firstElementChild is focused');
+      await aTimeout(0);
+      const ownerRoot =
+        (menu.firstElementChild.getRootNode &&
+          menu.firstElementChild.getRootNode()) ||
+        document;
+      const { activeElement } = ownerRoot;
+      assert.equal(
+        activeElement,
+        menu.firstElementChild,
+        'menu.firstElementChild is focused'
+      );
     });
 
     it('selected item gets focus when menu is focused', async () => {
       const menu = await basicFixture();
       menu.selected = 1;
       MockInteractions.focus(menu);
-      await aTimeout();
-      const ownerRoot = (menu.selectedItem.getRootNode && menu.selectedItem.getRootNode()) || document;
-      let activeElement = ownerRoot.activeElement;
-      assert.equal(activeElement, menu.selectedItem, 'menu.selectedItem is focused');
+      await aTimeout(0);
+      const ownerRoot =
+        (menu.selectedItem.getRootNode && menu.selectedItem.getRootNode()) ||
+        document;
+      const { activeElement } = ownerRoot;
+      assert.equal(
+        activeElement,
+        menu.selectedItem,
+        'menu.selectedItem is focused'
+      );
     });
 
     it('focusing on next item skips disabled items', async () => {
       const menu = await disabledFixture();
       MockInteractions.focus(menu);
-      await aTimeout();
+      await aTimeout(0);
       // Key press down
       MockInteractions.keyDownOn(menu, 40, [], 'ArrowDown');
-      await aTimeout();
-      const focusedItem = menu.focusedItem;
+      await aTimeout(0);
+      const { focusedItem } = menu;
       assert.equal(focusedItem, menu.items[2], 'menu.items[2] is focused');
     });
 
     it('focusing on next item skips invisible items', async () => {
       const menu = await invisibleFixture();
       MockInteractions.focus(menu);
-      await aTimeout();
+      await aTimeout(0);
       // Key press down
       MockInteractions.keyDownOn(menu, 40, [], 'ArrowDown');
-      await aTimeout();
-      const focusedItem = menu.focusedItem;
+      await aTimeout(0);
+      const { focusedItem } = menu;
       assert.equal(focusedItem, menu.items[4], 'menu.items[4] is focused');
     });
 
     it('focusing on next item skips nested invisible items', async () => {
       const nestedMenu = await nestedInvisibleFixture();
-      await aTimeout();
+      await aTimeout(0);
       const menu = nestedMenu.actualMenu;
       MockInteractions.focus(menu);
       // Wait for async focus
-      await aTimeout();
+      await aTimeout(0);
       // Key press down
       MockInteractions.keyDownOn(menu, 40, [], 'ArrowDown');
-      await aTimeout();
-      const focusedItem = menu.focusedItem;
+      await aTimeout(0);
+      const { focusedItem } = menu;
       assert.equal(focusedItem, menu.items[4], 'menu.items[4] is focused');
     });
 
@@ -193,11 +253,11 @@ describe('AnypointMenuMixin', () => {
       const menu = await emptyFixture();
       MockInteractions.focus(menu);
       // Wait for async focus
-      await aTimeout();
+      await aTimeout(0);
       // Key press down
       MockInteractions.keyDownOn(menu, 40, [], 'ArrowDown');
-      await aTimeout();
-      const focusedItem = menu.focusedItem;
+      await aTimeout(0);
+      const { focusedItem } = menu;
       assert.equal(focusedItem, undefined, 'no focused item');
     });
 
@@ -205,10 +265,10 @@ describe('AnypointMenuMixin', () => {
       const menu = await onlyDisabledFixture();
       MockInteractions.focus(menu);
       // Wait for async focus
-      await aTimeout();
+      await aTimeout(0);
       MockInteractions.keyDownOn(menu, 40, [], 'ArrowDown');
-      await aTimeout();
-      const focusedItem = menu.focusedItem;
+      await aTimeout(0);
+      const { focusedItem } = menu;
       assert.equal(focusedItem, undefined, 'no focused item');
     });
 
@@ -216,11 +276,11 @@ describe('AnypointMenuMixin', () => {
       const menu = await disabledFixture();
       MockInteractions.focus(menu);
       // Wait for async focus
-      await aTimeout();
+      await aTimeout(0);
       // Key press up
       MockInteractions.keyDownOn(menu, 38, [], 'ArrowUp');
-      await aTimeout();
-      const focusedItem = menu.focusedItem;
+      await aTimeout(0);
+      const { focusedItem } = menu;
       assert.equal(focusedItem, menu.items[2], 'menu.items[2] is focused');
     });
 
@@ -228,11 +288,11 @@ describe('AnypointMenuMixin', () => {
       const menu = await invisibleFixture();
       MockInteractions.focus(menu);
       // Wait for async focus
-      await aTimeout();
+      await aTimeout(0);
       // Key press up
       MockInteractions.keyDownOn(menu, 38, [], 'ArrowUp');
-      await aTimeout();
-      const focusedItem = menu.focusedItem;
+      await aTimeout(0);
+      const { focusedItem } = menu;
       assert.equal(focusedItem, menu.items[4], 'menu.items[4] is focused');
     });
 
@@ -241,11 +301,11 @@ describe('AnypointMenuMixin', () => {
       const menu = nestedMenu.actualMenu;
       MockInteractions.focus(menu);
       // Wait for async focus
-      await aTimeout();
+      await aTimeout(0);
       // Key press up
       MockInteractions.keyDownOn(menu, 38, [], 'ArrowUp');
-      await aTimeout();
-      const focusedItem = menu.focusedItem;
+      await aTimeout(0);
+      const { focusedItem } = menu;
       assert.equal(focusedItem, menu.items[4], 'menu.items[4] is focused');
     });
 
@@ -254,24 +314,24 @@ describe('AnypointMenuMixin', () => {
       const menu = await emptyFixture();
       MockInteractions.focus(menu);
       // Wait for async focus
-      await aTimeout();
+      await aTimeout(0);
       // Key press up
       MockInteractions.keyDownOn(menu, 38, [], 'ArrowUp');
-      await aTimeout();
-      const focusedItem = menu.focusedItem;
+      await aTimeout(0);
+      const { focusedItem } = menu;
       assert.equal(focusedItem, undefined, 'no focused item');
     });
 
     it('focusing on previous item in all disabled menu', async () => {
       const menu = await onlyDisabledFixture();
-      await aTimeout();
+      await aTimeout(0);
       MockInteractions.focus(menu);
       // Wait for async focus
-      await aTimeout();
+      await aTimeout(0);
       // Key press up
       MockInteractions.keyDownOn(menu, 38, [], 'ArrowUp');
-      await aTimeout();
-      const focusedItem = menu.focusedItem;
+      await aTimeout(0);
+      const { focusedItem } = menu;
       assert.equal(focusedItem, undefined, 'no focused item');
     });
 
@@ -279,24 +339,24 @@ describe('AnypointMenuMixin', () => {
       const menu = await disabledFixture();
       MockInteractions.focus(menu);
       // Wait for async focus
-      await aTimeout();
+      await aTimeout(0);
       // Key press 'b'
       MockInteractions.keyDownOn(menu, 66, [], 'b');
-      await aTimeout();
-      const focusedItem = menu.focusedItem;
+      await aTimeout(0);
+      const { focusedItem } = menu;
       assert.equal(focusedItem, menu.items[2], 'menu.items[2] is focused');
     });
 
     it('focusing on item using key press ignores disabled items', async () => {
       const menu = await disabledFixture();
-      await aTimeout();
+      await aTimeout(0);
       MockInteractions.focus(menu);
       // Wait for async focus
-      await aTimeout();
+      await aTimeout(0);
       // Key press 'c'
       MockInteractions.keyDownOn(menu, 67, [], 'c');
-      await aTimeout();
-      const focusedItem = menu.focusedItem;
+      await aTimeout(0);
+      const { focusedItem } = menu;
       assert.equal(focusedItem, menu.items[0], 'menu.items[0] is focused');
     });
 
@@ -304,11 +364,11 @@ describe('AnypointMenuMixin', () => {
       const menu = await onlyDisabledFixture();
       MockInteractions.focus(menu);
       // Wait for async focus
-      await aTimeout();
+      await aTimeout(0);
       // Key press 'c'
       MockInteractions.keyDownOn(menu, 67, [], 'c');
-      await aTimeout();
-      const focusedItem = menu.focusedItem;
+      await aTimeout(0);
+      const { focusedItem } = menu;
       assert.equal(focusedItem, undefined, 'no focused item');
     });
 
@@ -316,13 +376,13 @@ describe('AnypointMenuMixin', () => {
       const menu = await countriesFixture();
       MockInteractions.focus(menu);
       // Wait for async focus
-      await aTimeout();
+      await aTimeout(0);
       // Key press 'u'
       MockInteractions.keyDownOn(menu, 85, [], 'u');
       // Key press 'g'
       MockInteractions.keyDownOn(menu, 71, [], 'g');
-      await aTimeout();
-      const focusedItem = menu.focusedItem;
+      await aTimeout(0);
+      const { focusedItem } = menu;
       assert.equal(focusedItem, menu.items[1], 'menu.items[1] is focused');
     });
 
@@ -330,7 +390,7 @@ describe('AnypointMenuMixin', () => {
       const menu = await countriesFixture();
       MockInteractions.focus(menu);
       // Wait for async focus
-      await aTimeout();
+      await aTimeout(0);
       // Key press 'u'
       MockInteractions.keyDownOn(menu, 85, [], 'u');
       // Key press 'Alt', should be ignored.
@@ -347,8 +407,8 @@ describe('AnypointMenuMixin', () => {
       MockInteractions.keyDownOn(menu, 16, [], 'Shift');
       // Key press 'g'
       MockInteractions.keyDownOn(menu, 71, [], 'g');
-      await aTimeout();
-      const focusedItem = menu.focusedItem;
+      await aTimeout(0);
+      const { focusedItem } = menu;
       assert.equal(focusedItem, menu.items[1], 'menu.items[1] is focused');
     });
 
@@ -356,31 +416,46 @@ describe('AnypointMenuMixin', () => {
       const menu = await bogusAttrForItemTitleFixture();
       MockInteractions.focus(menu);
       // Wait for async focus
-      await aTimeout();
+      await aTimeout(0);
       // Key press 'i'
       MockInteractions.keyDownOn(menu, 73, [], 'i');
-      await aTimeout();
-      const focusedItem = menu.focusedItem;
-      assert.equal(focusedItem, menu.items[0], 'menu.items[0] is still focused');
+      await aTimeout(0);
+      const { focusedItem } = menu;
+      assert.equal(
+        focusedItem,
+        menu.items[0],
+        'menu.items[0] is still focused'
+      );
     });
 
     it('focusing non-item content does not auto-focus an item', async () => {
       const menu = await basicFixture();
       menu.extraContent.focus();
-      await aTimeout();
-      const menuOwnerRoot = (menu.extraContent.getRootNode && menu.extraContent.getRootNode()) || document;
+      await aTimeout(0);
+      const menuOwnerRoot =
+        (menu.extraContent.getRootNode && menu.extraContent.getRootNode()) ||
+        document;
       const menuActiveElement = menuOwnerRoot.activeElement;
-      assert.equal(menuActiveElement, menu.extraContent, 'menu.extraContent is focused');
-      assert.equal(document.activeElement, menu, 'menu is document.activeElement');
+      assert.equal(
+        menuActiveElement,
+        menu.extraContent,
+        'menu.extraContent is focused'
+      );
+      assert.equal(
+        document.activeElement,
+        menu,
+        'menu is document.activeElement'
+      );
     });
 
     it('last activated item in a multi select menu is focused', async () => {
       const menu = await multiFixture();
       menu.selected = 0;
       menu.items[1].click();
-      await aTimeout();
-      const ownerRoot = (menu.items[1].getRootNode && menu.items[1].getRootNode()) || document;
-      const activeElement = ownerRoot.activeElement;
+      await aTimeout(0);
+      const ownerRoot =
+        (menu.items[1].getRootNode && menu.items[1].getRootNode()) || document;
+      const { activeElement } = ownerRoot;
       assert.equal(activeElement, menu.items[1], 'menu.items[1] is focused');
     });
 
@@ -388,16 +463,17 @@ describe('AnypointMenuMixin', () => {
       const menu = await multiFixture();
       menu.selected = 0;
       menu.items[0].click();
-      await aTimeout();
-      const ownerRoot = (menu.items[0].getRootNode && menu.items[0].getRootNode()) || document;
-      const activeElement = ownerRoot.activeElement;
+      await aTimeout(0);
+      const ownerRoot =
+        (menu.items[0].getRootNode && menu.items[0].getRootNode()) || document;
+      const { activeElement } = ownerRoot;
       assert.equal(activeElement, menu.items[0], 'menu.items[0] is focused');
     });
 
     it('keyboard events should not bubble', async () => {
       const menu = await nestedFixture();
       let keyCounter = 0;
-      menu.addEventListener('keydown', function(event) {
+      menu.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') {
           keyCounter++;
         }
@@ -414,7 +490,7 @@ describe('AnypointMenuMixin', () => {
       MockInteractions.keyDownOn(menu.firstElementChild, 40, [], 'ArrowDown');
       // esc
       MockInteractions.keyDownOn(menu.firstElementChild, 27, [], 'Escape');
-      await aTimeout();
+      await aTimeout(0);
       assert.equal(menu.firstElementChild.tagName, 'TEST-MENU');
       assert.equal(keyCounter, 0);
     });
@@ -423,14 +499,14 @@ describe('AnypointMenuMixin', () => {
       // This menu will not dispatch an 'iron-items-changed' event.
       const menu = await emptyFixture();
       menu.focus();
-      await aTimeout();
+      await aTimeout(0);
       assert.equal(document.activeElement, menu);
     });
 
     it('A disabled menu should not be focusable', async () => {
       const menu = await disabledGroupAndOptionsFixture();
       menu.focus();
-      await aTimeout();
+      await aTimeout(0);
       assert.notEqual(document.activeElement, menu);
       assert.notEqual(document.activeElement, menu.items[0]);
       assert.notEqual(document.activeElement, menu.items[1]);
@@ -468,22 +544,25 @@ describe('AnypointMenuMixin', () => {
     it('`tabIndex` properties of all items are updated when items change', async () => {
       const menu = await basicFixture();
       function assertTabIndexCounts(nodes, expected) {
-        let tabIndexCounts = {};
+        const tabIndexCounts = {};
         for (let i = 0; i < nodes.length; i++) {
-          let tabIndex = nodes[i].tabIndex;
+          const { tabIndex } = nodes[i];
           if (tabIndexCounts[tabIndex]) {
             tabIndexCounts[tabIndex]++;
           } else {
             tabIndexCounts[tabIndex] = 1;
           }
         }
-        assert.equal(Object.keys(tabIndexCounts).length, Object.keys(expected).length);
-        Object.keys(expected).forEach(function(key) {
+        assert.equal(
+          Object.keys(tabIndexCounts).length,
+          Object.keys(expected).length
+        );
+        Object.keys(expected).forEach((key) => {
           assert.equal(tabIndexCounts[key], expected[key]);
         });
       }
       function divWithTabIndex(tabIndex) {
-        let div = document.createElement('div');
+        const div = document.createElement('div');
         div.tabIndex = tabIndex;
         return div;
       }
@@ -495,7 +574,7 @@ describe('AnypointMenuMixin', () => {
       menu.appendChild(divWithTabIndex(3));
       await nextFrame();
       // Async wait for `observeNodes`.
-      await aTimeout();
+      await aTimeout(0);
       assertTabIndexCounts(menu.items, { '-1': 5, '0': 1 });
     });
 
@@ -503,7 +582,7 @@ describe('AnypointMenuMixin', () => {
       const menu = await countriesFixture();
       MockInteractions.focus(menu);
       // Wait for async focus
-      await aTimeout();
+      await aTimeout(0);
       // Key press 'Tab'
       MockInteractions.keyDownOn(menu, 9, ['shift'], 'Tab');
       assert.equal(menu.getAttribute('tabindex'), '-1');
@@ -525,21 +604,37 @@ describe('AnypointMenuMixin', () => {
     it('updates aria-selected when selection is made', async () => {
       const menu = await useAriaSelectedFixture();
       menu.select(0);
-      await aTimeout();
+      await aTimeout(0);
       const nodes = menu.querySelectorAll('div');
-      assert.equal(nodes[0].getAttribute('aria-selected'), 'true', '1st node has aria-selected = true');
-      assert.equal(nodes[1].getAttribute('aria-selected'), 'false', '2nd node has aria-selected = false');
+      assert.equal(
+        nodes[0].getAttribute('aria-selected'),
+        'true',
+        '1st node has aria-selected = true'
+      );
+      assert.equal(
+        nodes[1].getAttribute('aria-selected'),
+        'false',
+        '2nd node has aria-selected = false'
+      );
     });
 
     it('updates aria-selected when another selection is made', async () => {
       const menu = await useAriaSelectedFixture();
       menu.select(0);
-      await aTimeout();
+      await aTimeout(0);
       menu.select(1);
-      await aTimeout();
+      await aTimeout(0);
       const nodes = menu.querySelectorAll('div');
-      assert.equal(nodes[0].getAttribute('aria-selected'), 'false', '1st node has aria-selected = false');
-      assert.equal(nodes[1].getAttribute('aria-selected'), 'true', '2nd node has aria-selected = true');
+      assert.equal(
+        nodes[0].getAttribute('aria-selected'),
+        'false',
+        '1st node has aria-selected = false'
+      );
+      assert.equal(
+        nodes[1].getAttribute('aria-selected'),
+        'true',
+        '2nd node has aria-selected = true'
+      );
     });
   });
 
@@ -556,6 +651,127 @@ describe('AnypointMenuMixin', () => {
     });
   });
 
+  describe('Items highlighting', () => {
+    describe('highlightNext()', () => {
+      let element = /** @type TestMenu */ (null);
+      beforeEach(async () => {
+        element = await basicFixture();
+      });
+
+      it('sets highlight class on the first item', () => {
+        element.highlightNext();
+        assert.isTrue(element.items[0].classList.contains('highlight'));
+      });
+
+      it('sets highlightedItem', () => {
+        element.highlightNext();
+        const [item] = element.items;
+        assert.isTrue(element.highlightedItem === item);
+      });
+
+      it('highlights next item after previous highlighted item', () => {
+        element.highlightNext();
+        element.highlightNext();
+        assert.isTrue(element.items[1].classList.contains('highlight'));
+      });
+
+      it('changes highlightedItem', () => {
+        element.highlightNext();
+        element.highlightNext();
+        const item = element.items[1];
+        assert.isTrue(element.highlightedItem === item);
+      });
+
+      it('removes "highlight" class from previous item', () => {
+        element.highlightNext();
+        element.highlightNext();
+        assert.isFalse(element.items[0].classList.contains('highlight'));
+      });
+
+      it('highlights item after current selection', () => {
+        const item = element.items[1];
+        MockInteractions.focus(item);
+        element.highlightNext();
+        assert.isFalse(element.items[2].classList.contains('highlight'));
+      });
+
+      it('highlights item after disabled item', () => {
+        const item = element.items[0];
+        item.setAttribute('disabled', '');
+        element.highlightNext();
+        assert.isTrue(element.items[1].classList.contains('highlight'));
+      });
+    });
+
+    describe('highlightPrevious()', () => {
+      let element = /** @type TestMenu */ (null);
+      beforeEach(async () => {
+        element = await basicFixture();
+      });
+
+      it('sets highlight class on the last item', () => {
+        element.highlightPrevious();
+        assert.isTrue(element.items[2].classList.contains('highlight'));
+      });
+
+      it('sets highlightedItem', () => {
+        element.highlightPrevious();
+        const item = element.items[2];
+        assert.isTrue(element.highlightedItem === item);
+      });
+
+      it('highlights previous item before previous highlighted item', () => {
+        element.highlightPrevious();
+        element.highlightPrevious();
+        assert.isTrue(element.items[1].classList.contains('highlight'));
+      });
+
+      it('changes highlightedItem', () => {
+        element.highlightPrevious();
+        element.highlightPrevious();
+        const item = element.items[1];
+        assert.isTrue(element.highlightedItem === item);
+      });
+
+      it('removes "highlight" class from previous item', () => {
+        element.highlightPrevious();
+        element.highlightPrevious();
+        assert.isFalse(element.items[2].classList.contains('highlight'));
+      });
+
+      it('highlights item before current selection', () => {
+        const item = element.items[1];
+        MockInteractions.focus(item);
+        element.highlightPrevious();
+        assert.isFalse(element.items[0].classList.contains('highlight'));
+      });
+
+      it('highlights item before disabled item', () => {
+        const item = element.items[2];
+        item.setAttribute('disabled', '');
+        element.highlightPrevious();
+        assert.isTrue(element.items[1].classList.contains('highlight'));
+      });
+    });
+
+    describe('Signle item menu', () => {
+      let element = /** @type TestMenu */ (null);
+      beforeEach(async () => {
+        element = await singleItenFixture();
+      });
+
+      it('highlights single item with next', () => {
+        element.highlightNext();
+        assert.isTrue(element.items[0].classList.contains('highlight'));
+      });
+
+      it('highlights single item with previous', () => {
+        element.highlightPrevious();
+        assert.isTrue(element.items[0].classList.contains('highlight'));
+      });
+    });
+  });
+
   describe('a11y', async () => {
     it('is accessible without selection', async () => {
       const element = await basicFixture();
@@ -565,7 +781,7 @@ describe('AnypointMenuMixin', () => {
     it('is accessible with focus', async () => {
       const menu = await basicFixture();
       menu.focus();
-      await aTimeout();
+      await aTimeout(0);
       await assert.isAccessible(menu);
     });
 

@@ -27,6 +27,9 @@ const MODIFIER_KEYS = [
 
 const SEARCH_RESET_TIMEOUT_MS = 1000;
 
+export const highlightedItem = Symbol('highlightedItem');
+export const highlightedItemValue = Symbol('highlightedItem');
+
 /**
  * @param {typeof HTMLElement} base
  * @mixes MultiSelectableMixin
@@ -102,6 +105,38 @@ const mxFunction = (base) => {
         this.requestUpdate('disabled', value);
       }
       this._disabledChanged(value);
+    }
+
+    /**
+     * @return {HTMLElement|null} Currently highlighted item.
+     */
+    get highlightedItem() {
+      return this[highlightedItem];
+    }
+
+    /**
+     * @return {HTMLElement|null} Currently highlighted item (private)
+     */
+    get [highlightedItem]() {
+      return this[highlightedItemValue] || null;
+    }
+
+    /**
+     * Sets the highlighted item. The item has to be one of the current items.
+     * @param {HTMLElement} value The element to set
+     */
+    set [highlightedItem](value) {
+      const old = this[highlightedItemValue];
+      if (old === value) {
+        return;
+      }
+      this[highlightedItemValue] = value;
+      if (old) {
+        old.classList.remove('highlight');
+      }
+      if (value) {
+        value.classList.add('highlight');
+      }
     }
 
     constructor() {
@@ -305,7 +340,7 @@ const mxFunction = (base) => {
      * menu, disabled items will be skipped.
      * Loop until length + 1 to handle case of single item in menu.
      */
-    _focusPrevious() {
+    focusPrevious() {
       const { length } = this.items;
       const curFocusIndex = Number(this.indexOf(this.focusedItem));
 
@@ -324,7 +359,18 @@ const mxFunction = (base) => {
       }
     }
 
-    _focusNext() {
+    /**
+     * @deprecated Please, use `focusPrevious()` instead.
+     */
+    _focusPrevious() {
+      this.focusPrevious();
+    }
+
+    /**
+     * Focuses the next item (relative to the currently focused item) in the
+     * menu, disabled items will be skipped.
+     */
+    focusNext() {
       const { length } = this.items;
       const curFocusIndex = Number(this.indexOf(this.focusedItem));
       for (let i = 1; i < length + 1; i++) {
@@ -339,6 +385,66 @@ const mxFunction = (base) => {
             return;
           }
         }
+      }
+    }
+
+    /**
+     * @deprecated Please, use `focusNext()` instead.
+     */
+    _focusNext() {
+      this.focusNext();
+    }
+
+    /**
+     * Highlights, by setting the `highlight` css class, the next availabl element.
+     * If there's no highlighted item but there is a selection (focused item)
+     * then a next item after the selection is selected.
+     */
+    highlightNext() {
+      const { items } = this;
+      const { length } = items;
+      if (!length) {
+        return;
+      }
+      let curIndex = Number(this.indexOf(this.highlightedItem));
+      if (curIndex === -1) {
+        curIndex = Number(this.indexOf(this.focusedItem));
+      }
+      for (let i = 1; i < length + 1; i++) {
+        const item = items[(curIndex + i) % length];
+        if (item.hasAttribute('disabled')) {
+          continue;
+        }
+        this[highlightedItem] = item;
+        break;
+      }
+    }
+
+    /**
+     * Highlights, by setting the `highlight` css class, the previous availabl element.
+     * If there's no highlighted item but there is a selection (focused item)
+     * then a previous item before the selection is selected.
+     */
+    highlightPrevious() {
+      const { items } = this;
+      const { length } = items;
+      if (!length) {
+        return;
+      }
+      let curIndex = Number(this.indexOf(this.highlightedItem));
+      if (curIndex === -1) {
+        curIndex = Number(this.indexOf(this.focusedItem));
+      }
+      if (curIndex === -1) {
+        curIndex = 0;
+      }
+      for (let i = 1; i < length + 1; i++) {
+        const item = this.items[(curIndex - i + length) % length];
+        if (item.hasAttribute('disabled')) {
+          continue;
+        }
+        this[highlightedItem] = item;
+        break;
       }
     }
 
