@@ -63,6 +63,12 @@ const mxFunction = (base) => {
          * accepts `aria-selected` attribute on children then set this property.
          */
         useAriaSelected: { type: Boolean },
+        /**
+         * When set the effect of calling `highlightNext()` or `highlightPrevious()`
+         * will be setting `aria-selected` attribute. For proper accessibility use
+         * with the combination with `useAriaSelected` attribute.
+         */
+        highlightAriaSelected: { type: Boolean },
       };
     }
 
@@ -126,16 +132,23 @@ const mxFunction = (base) => {
      * @param {HTMLElement} value The element to set
      */
     set [highlightedItem](value) {
-      const old = this[highlightedItemValue];
+      const old = /** @type HTMLElement */ (this[highlightedItemValue]);
       if (old === value) {
         return;
       }
       this[highlightedItemValue] = value;
+      const aria = this.highlightAriaSelected;
       if (old) {
         old.classList.remove('highlight');
+        if (aria) {
+          old.setAttribute('aria-selected', 'false');
+        }
       }
       if (value) {
         value.classList.add('highlight');
+        if (aria) {
+          value.setAttribute('aria-selected', 'true');
+        }
       }
     }
 
@@ -143,6 +156,7 @@ const mxFunction = (base) => {
       super();
       this._previousTabIndex = 0;
       this.useAriaSelected = false;
+      this.highlightAriaSelected = false;
       this.attrForItemTitle = undefined;
 
       this._onFocus = this._onFocus.bind(this);

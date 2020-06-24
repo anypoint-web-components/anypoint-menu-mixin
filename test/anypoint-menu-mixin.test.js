@@ -157,6 +157,15 @@ describe('AnypointMenuMixin', () => {
       <div>item 2</div>
     </test-menu>`);
   }
+  /**
+   * @return {Promise<TestMenu>}
+   */
+  async function highlightAriaSelectedFixture() {
+    return fixture(`<test-menu useariaselected highlightariaselected>
+      <div>item 1</div>
+      <div>item 2</div>
+    </test-menu>`);
+  }
 
   describe('menu keyboard tests', async () => {
     it('menu has role="menu"', async () => {
@@ -768,6 +777,25 @@ describe('AnypointMenuMixin', () => {
       it('highlights single item with previous', () => {
         element.highlightPrevious();
         assert.isTrue(element.items[0].classList.contains('highlight'));
+      });
+    });
+
+    describe('a11y', () => {
+      let element = /** @type TestMenu */ (null);
+      beforeEach(async () => {
+        element = await highlightAriaSelectedFixture();
+      });
+
+      it('sets aria-selected when highlighting an item', () => {
+        element.highlightNext();
+        assert.equal(element.items[0].getAttribute('aria-selected'), 'true');
+      });
+
+      it('updates aria-selected from dehighlighted item', () => {
+        element.highlightNext();
+        element.highlightNext();
+        assert.equal(element.items[0].getAttribute('aria-selected'), 'false');
+        assert.equal(element.items[1].getAttribute('aria-selected'), 'true');
       });
     });
   });
