@@ -27,8 +27,8 @@ const MODIFIER_KEYS = [
 
 const SEARCH_RESET_TIMEOUT_MS = 1000;
 
-export const highlightedItem = Symbol('highlightedItem');
-export const highlightedItemValue = Symbol('highlightedItem');
+export const highlightedItem = '__highlighteditem';
+export const highlightedItemValue = '__highlighteditemvalue';
 
 /**
  * @param {typeof HTMLElement} base

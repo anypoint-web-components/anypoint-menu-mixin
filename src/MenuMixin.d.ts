@@ -6,8 +6,8 @@ interface MenuMixinConstructor {
   new(...args: any[]): MenuMixin;
 }
 
-export declare const highlightedItem: symbol;
-export declare const highlightedItemValue: symbol;
+export declare const highlightedItem: string;
+export declare const highlightedItemValue: string;
 
 interface MenuMixin {
   /**
