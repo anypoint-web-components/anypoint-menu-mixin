@@ -99,3 +99,19 @@
 * adding highlighting functions [299971f](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/299971fa6d74c8d964c319f5dc843111e8cbd65f) by Pawel
 
 
+<a name="1.1.6"></a>
+## [1.1.6](https://github.com/anypoint-web-components/anypoint-menu-mixin/compare/1.1.3...1.1.6) (2020-06-26)
+
+### Build
+
+* bumping version [78a34d7](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/78a34d7f12053fc20b9590790b36c78697f3032f) by Pawel
+
+
+### Update
+
+* removing computed properties [af8e837](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/af8e837748b967322ab4c4b25d991bf3ef9e4011) by Pawel
+* removing use of symbols [471b877](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/471b87710c9777c8eee0328c8882ebcb1efa8ad1) by Pawel
+* [ci skip] automated merge master->stage. syncing main branches [70140bc](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/70140bc30080e5603f9cba2b13cf2605a7fdc4cd) by Ci agent
+* [ci skip] automated merge master->stage. syncing main branches [1706b46](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/1706b4662360e46fd366b89afb9603f2d14fcfcd) by Ci agent
+
+
