@@ -117,26 +117,26 @@ const mxFunction = (base) => {
      * @return {HTMLElement|null} Currently highlighted item.
      */
     get highlightedItem() {
-      return this[highlightedItem];
+      return this.__highlighteditem;
     }
 
     /**
      * @return {HTMLElement|null} Currently highlighted item (private)
      */
-    get [highlightedItem]() {
-      return this[highlightedItemValue] || null;
+    get __highlighteditem() {
+      return this.__highlighteditemvalue || null;
     }
 
     /**
      * Sets the highlighted item. The item has to be one of the current items.
      * @param {HTMLElement} value The element to set
      */
-    set [highlightedItem](value) {
-      const old = /** @type HTMLElement */ (this[highlightedItemValue]);
+    set __highlighteditem(value) {
+      const old = /** @type HTMLElement */ (this.__highlighteditemvalue);
       if (old === value) {
         return;
       }
-      this[highlightedItemValue] = value;
+      this.__highlighteditemvalue = value;
       const aria = this.highlightAriaSelected;
       if (old) {
         old.classList.remove('highlight');
@@ -429,7 +429,7 @@ const mxFunction = (base) => {
         if (item.hasAttribute('disabled')) {
           continue;
         }
-        this[highlightedItem] = item;
+        this.__highlighteditem = item;
         break;
       }
     }
@@ -457,7 +457,7 @@ const mxFunction = (base) => {
         if (item.hasAttribute('disabled')) {
           continue;
         }
-        this[highlightedItem] = item;
+        this.__highlighteditem = item;
         break;
       }
     }
