@@ -115,3 +115,15 @@
 * [ci skip] automated merge master->stage. syncing main branches [1706b46](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/1706b4662360e46fd366b89afb9603f2d14fcfcd) by Ci agent
 
 
+<a name="1.1.7"></a>
+## [1.1.7](https://github.com/anypoint-web-components/anypoint-menu-mixin/compare/1.1.4...1.1.7) (2020-09-27)
+
+### Update
+
+* adding better TS support [675a9ae](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/675a9ae98a3bcf7a855d45321aa0a691d84f65e4) by Pawel
+* [ci skip] automated merge master->stage. syncing main branches [e4c3962](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/e4c396200eeecb52b7f41277156d2a82587657dc) by Ci agent
+* removing computed properties [af8e837](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/af8e837748b967322ab4c4b25d991bf3ef9e4011) by Pawel
+* removing use of symbols [471b877](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/471b87710c9777c8eee0328c8882ebcb1efa8ad1) by Pawel
+* [ci skip] automated merge master->stage. syncing main branches [70140bc](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/70140bc30080e5603f9cba2b13cf2605a7fdc4cd) by Ci agent
+
+
