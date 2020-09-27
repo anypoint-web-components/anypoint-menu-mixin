@@ -161,7 +161,7 @@ class ComponentDemo extends ArcDemoPage {
       </div>
 
       <div class="card">
-        <h3>Auto focuses while typoing a name</h3>
+        <h3>Auto focuses while typing a name</h3>
         <simple-menu class="scrolled">
           ${this.fruits.map(
             (item) =>

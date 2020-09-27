@@ -1,5 +1,4 @@
-import { MultiSelectableMixinConstructor } from '@anypoint-web-components/anypoint-selector/src/MultiSelectableMixin';
-import { SelectableMixinConstructor } from '@anypoint-web-components/anypoint-selector/src/SelectableMixin';
+import { MultiSelectableMixinConstructor, SelectableMixinConstructor, MultiSelectableMixin, SelectableMixin } from '@anypoint-web-components/anypoint-selector';
 
 declare function MenuMixin<T extends new (...args: any[]) => {}>(base: T): T & MultiSelectableMixinConstructor & SelectableMixinConstructor & MenuMixinConstructor;
 interface MenuMixinConstructor {
@@ -9,9 +8,9 @@ interface MenuMixinConstructor {
 export declare const highlightedItem: string;
 export declare const highlightedItemValue: string;
 
-interface MenuMixin {
+interface MenuMixin extends MultiSelectableMixin, SelectableMixin {
   /**
-   * Currenlty focused in the menu item.
+   * Currently focused in the menu item.
    */
   readonly focusedItem?: HTMLElement;
   /**
@@ -25,11 +24,13 @@ interface MenuMixin {
    * The attribute to use on menu items to look up the item title. Typing the
    * first letter of an item when the menu is open focuses that item. If
    * unset, `textContent` will be used.
+   * @attribute
    */
   attrForItemTitle?: string;
 
   /**
    * Whether or not this menu is disabled.
+   * @attribute
    */
   disabled?: boolean;
 
@@ -40,6 +41,7 @@ interface MenuMixin {
    * The `aria-selected` attribute is invalid with default role of this
    * element ("menu"). If you manually change the role to some other that
    * accepts `aria-selected` attribute on children then set this property.
+   * @attribute
    */
   useAriaSelected?: boolean;
 
