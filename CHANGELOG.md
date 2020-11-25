@@ -127,3 +127,20 @@
 * [ci skip] automated merge master->stage. syncing main branches [70140bc](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/70140bc30080e5603f9cba2b13cf2605a7fdc4cd) by Ci agent
 
 
+<a name="1.1.8"></a>
+## [1.1.8](https://github.com/anypoint-web-components/anypoint-menu-mixin/compare/1.1.6...1.1.8) (2020-11-25)
+
+### Build
+
+* bumping version [e14cd37](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/e14cd37dca3613034aab69664bcbaf9938d3487b) by Pawel Psztyc
+
+
+### Update
+
+* updating types [710104d](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/710104d3c4368b1a82205fc96fef4cb6eecc5aa4) by Pawel Psztyc
+* upgrading to the new testing runner [478ca2d](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/478ca2d4781bf7ec4966587a2026beef6bdbd143) by Pawel Psztyc
+* [ci skip] automated merge master->stage. syncing main branches [c6f0faa](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/c6f0faa7b20d8326fbdc3f37b2ac76e19fefb14d) by Ci agent
+* adding better TS support [675a9ae](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/675a9ae98a3bcf7a855d45321aa0a691d84f65e4) by Pawel
+* [ci skip] automated merge master->stage. syncing main branches [e4c3962](https://github.com/anypoint-web-components/anypoint-menu-mixin/commit/e4c396200eeecb52b7f41277156d2a82587657dc) by Ci agent
+
+
