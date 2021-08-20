@@ -2,6 +2,9 @@ import { LitElement, html } from 'lit-element';
 import { MenuMixin } from '../index.js';
 
 export class TestMenu extends MenuMixin(LitElement) {
+  /**
+   * @returns {HTMLElement}
+   */
   get extraContent() {
     return this.shadowRoot.querySelector('.extraContent');
   }

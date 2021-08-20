@@ -1,9 +1,9 @@
-import { fixture, assert, aTimeout, nextFrame } from '@open-wc/testing';
-import * as MockInteractions from '@polymer/iron-test-helpers/mock-interactions.js';
+import { fixture, assert, aTimeout, nextFrame, html } from '@open-wc/testing';
 import './test-menu.js';
 import './test-nested-menu.js';
 
-/** @typedef {import('./test-menu.js').TestMenu} TestMenu */
+/** @typedef {import('./test-menu').TestMenu} TestMenu */
+/** @typedef {import('./test-nested-menu').TestNestedMenu} TestNestedMenu */
 
 /* eslint-disable no-plusplus */
 
@@ -21,7 +21,7 @@ describe('AnypointMenuMixin', () => {
    * @return {Promise<TestMenu>}
    */
   async function basicFixture() {
-    return fixture(`<test-menu>
+    return fixture(html`<test-menu>
       <div role="menuitem">item 1</div>
       <div role="menuitem">item 2</div>
       <div role="menuitem">item 3</div>
@@ -31,8 +31,8 @@ describe('AnypointMenuMixin', () => {
   /**
    * @return {Promise<TestMenu>}
    */
-  async function singleItenFixture() {
-    return fixture(`<test-menu>
+  async function singleItemFixture() {
+    return fixture(html`<test-menu>
       <div>item 1</div>
     </test-menu>`);
   }
@@ -64,8 +64,11 @@ describe('AnypointMenuMixin', () => {
     </test-menu>`);
   }
 
+  /**
+   * @return {Promise<TestNestedMenu>}
+   */
   async function nestedInvisibleFixture() {
-    return fixture(`
+    return fixture(html`
       <test-nested-menu>
       </test-nested-menu>
   `);
@@ -80,8 +83,11 @@ describe('AnypointMenuMixin', () => {
     </test-menu>`);
   }
 
+  /**
+   * @return {Promise<TestMenu>}
+   */
   async function multiFixture() {
-    return fixture(`<test-menu multi>
+    return fixture(html`<test-menu multi>
       <div>item 1</div>
       <div>item 2</div>
       <div>item 3</div>
@@ -92,7 +98,7 @@ describe('AnypointMenuMixin', () => {
    * @return {Promise<TestMenu>}
    */
   async function nestedFixture() {
-    return fixture(`<test-menu>
+    return fixture(html`<test-menu>
       <test-menu>
         <div>item 1</div>
         <div>item 2</div>
@@ -132,7 +138,7 @@ describe('AnypointMenuMixin', () => {
    * @return {Promise<TestMenu>}
    */
   async function countriesFixture() {
-    return fixture(`<test-menu>
+    return fixture(html`<test-menu>
       <div>Ghana</div>
       <div>Uganda</div>
     </test-menu>`);
@@ -142,7 +148,7 @@ describe('AnypointMenuMixin', () => {
    * @return {Promise<TestMenu>}
    */
   async function bogusAttrForItemTitleFixture() {
-    return fixture(`<test-menu attrforitemtitle="totally-doesnt-exist">
+    return fixture(html`<test-menu attrForItemTitle="totally-does-not-exist">
       <div>Focused by default</div>
       <div>I'm not entitled!</div>
     </test-menu>`);
@@ -152,7 +158,7 @@ describe('AnypointMenuMixin', () => {
    * @return {Promise<TestMenu>}
    */
   async function useAriaSelectedFixture() {
-    return fixture(`<test-menu useariaselected>
+    return fixture(html`<test-menu useAriaSelected>
       <div>item 1</div>
       <div>item 2</div>
     </test-menu>`);
@@ -161,7 +167,7 @@ describe('AnypointMenuMixin', () => {
    * @return {Promise<TestMenu>}
    */
   async function highlightAriaSelectedFixture() {
-    return fixture(`<test-menu useariaselected highlightariaselected>
+    return fixture(html`<test-menu useAriaSelected highlightAriaSelected>
       <div>item 1</div>
       <div>item 2</div>
     </test-menu>`);
@@ -175,12 +181,9 @@ describe('AnypointMenuMixin', () => {
 
     it('first item gets focus when menu is focused', async () => {
       const menu = await basicFixture();
-      MockInteractions.focus(menu);
+      menu.focus();
       await aTimeout(0);
-      const ownerRoot =
-        (menu.firstElementChild.getRootNode &&
-          menu.firstElementChild.getRootNode()) ||
-        document;
+      const ownerRoot = /** @type Document */ ((menu.firstElementChild.getRootNode && menu.firstElementChild.getRootNode()) || document);
       const { activeElement } = ownerRoot;
       assert.equal(
         activeElement,
@@ -190,13 +193,10 @@ describe('AnypointMenuMixin', () => {
     });
 
     it('first item gets focus when menu is focused in a single item menu', async () => {
-      const menu = await singleItenFixture();
-      MockInteractions.focus(menu);
+      const menu = await singleItemFixture();
+      menu.focus();
       await aTimeout(0);
-      const ownerRoot =
-        (menu.firstElementChild.getRootNode &&
-          menu.firstElementChild.getRootNode()) ||
-        document;
+      const ownerRoot = /** @type Document */ (menu.firstElementChild.getRootNode && menu.firstElementChild.getRootNode()) || document;
       const { activeElement } = ownerRoot;
       assert.equal(
         activeElement,
@@ -208,11 +208,9 @@ describe('AnypointMenuMixin', () => {
     it('selected item gets focus when menu is focused', async () => {
       const menu = await basicFixture();
       menu.selected = 1;
-      MockInteractions.focus(menu);
+      menu.focus();
       await aTimeout(0);
-      const ownerRoot =
-        (menu.selectedItem.getRootNode && menu.selectedItem.getRootNode()) ||
-        document;
+      const ownerRoot = /** @type Document */ (menu.selectedItem.getRootNode && menu.selectedItem.getRootNode()) || document;
       const { activeElement } = ownerRoot;
       assert.equal(
         activeElement,
@@ -223,10 +221,18 @@ describe('AnypointMenuMixin', () => {
 
     it('focusing on next item skips disabled items', async () => {
       const menu = await disabledFixture();
-      MockInteractions.focus(menu);
+      menu.focus();
       await aTimeout(0);
       // Key press down
-      MockInteractions.keyDownOn(menu, 40, [], 'ArrowDown');
+      const e = new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        code: 'ArrowDown',
+        key: 'ArrowDown',
+      });
+      menu.dispatchEvent(e);
+
       await aTimeout(0);
       const { focusedItem } = menu;
       assert.equal(focusedItem, menu.items[2], 'menu.items[2] is focused');
@@ -234,10 +240,17 @@ describe('AnypointMenuMixin', () => {
 
     it('focusing on next item skips invisible items', async () => {
       const menu = await invisibleFixture();
-      MockInteractions.focus(menu);
+      menu.focus();
       await aTimeout(0);
       // Key press down
-      MockInteractions.keyDownOn(menu, 40, [], 'ArrowDown');
+      const e = new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        code: 'ArrowDown',
+        key: 'ArrowDown',
+      });
+      menu.dispatchEvent(e);
       await aTimeout(0);
       const { focusedItem } = menu;
       assert.equal(focusedItem, menu.items[4], 'menu.items[4] is focused');
@@ -247,11 +260,18 @@ describe('AnypointMenuMixin', () => {
       const nestedMenu = await nestedInvisibleFixture();
       await aTimeout(0);
       const menu = nestedMenu.actualMenu;
-      MockInteractions.focus(menu);
+      menu.focus();
       // Wait for async focus
       await aTimeout(0);
       // Key press down
-      MockInteractions.keyDownOn(menu, 40, [], 'ArrowDown');
+      const e = new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        code: 'ArrowDown',
+        key: 'ArrowDown',
+      });
+      menu.dispatchEvent(e);
       await aTimeout(0);
       const { focusedItem } = menu;
       assert.equal(focusedItem, menu.items[4], 'menu.items[4] is focused');
@@ -260,11 +280,18 @@ describe('AnypointMenuMixin', () => {
     it('focusing on next item in empty menu', async () => {
       // This menu will not dispatch an 'iron-items-changed' event.
       const menu = await emptyFixture();
-      MockInteractions.focus(menu);
+      menu.focus();
       // Wait for async focus
       await aTimeout(0);
       // Key press down
-      MockInteractions.keyDownOn(menu, 40, [], 'ArrowDown');
+      const e = new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        code: 'ArrowDown',
+        key: 'ArrowDown',
+      });
+      menu.dispatchEvent(e);
       await aTimeout(0);
       const { focusedItem } = menu;
       assert.equal(focusedItem, undefined, 'no focused item');
@@ -272,10 +299,17 @@ describe('AnypointMenuMixin', () => {
 
     it('focusing on next item in all disabled menu', async () => {
       const menu = await onlyDisabledFixture();
-      MockInteractions.focus(menu);
+      menu.focus();
       // Wait for async focus
       await aTimeout(0);
-      MockInteractions.keyDownOn(menu, 40, [], 'ArrowDown');
+      const e = new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        code: 'ArrowDown',
+        key: 'ArrowDown',
+      });
+      menu.dispatchEvent(e);
       await aTimeout(0);
       const { focusedItem } = menu;
       assert.equal(focusedItem, undefined, 'no focused item');
@@ -283,11 +317,18 @@ describe('AnypointMenuMixin', () => {
 
     it('focusing on previous item skips disabled items', async () => {
       const menu = await disabledFixture();
-      MockInteractions.focus(menu);
+      menu.focus();
       // Wait for async focus
       await aTimeout(0);
       // Key press up
-      MockInteractions.keyDownOn(menu, 38, [], 'ArrowUp');
+      const e = new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        code: 'ArrowUp',
+        key: 'ArrowUp',
+      });
+      menu.dispatchEvent(e);
       await aTimeout(0);
       const { focusedItem } = menu;
       assert.equal(focusedItem, menu.items[2], 'menu.items[2] is focused');
@@ -295,11 +336,18 @@ describe('AnypointMenuMixin', () => {
 
     it('focusing on previous item skips invisible items', async () => {
       const menu = await invisibleFixture();
-      MockInteractions.focus(menu);
+      menu.focus();
       // Wait for async focus
       await aTimeout(0);
       // Key press up
-      MockInteractions.keyDownOn(menu, 38, [], 'ArrowUp');
+      const e = new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        code: 'ArrowUp',
+        key: 'ArrowUp',
+      });
+      menu.dispatchEvent(e);
       await aTimeout(0);
       const { focusedItem } = menu;
       assert.equal(focusedItem, menu.items[4], 'menu.items[4] is focused');
@@ -308,11 +356,18 @@ describe('AnypointMenuMixin', () => {
     it('focusing on previous item skips nested invisible items', async () => {
       const nestedMenu = await nestedInvisibleFixture();
       const menu = nestedMenu.actualMenu;
-      MockInteractions.focus(menu);
+      menu.focus();
       // Wait for async focus
       await aTimeout(0);
       // Key press up
-      MockInteractions.keyDownOn(menu, 38, [], 'ArrowUp');
+      const e = new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        code: 'ArrowUp',
+        key: 'ArrowUp',
+      });
+      menu.dispatchEvent(e);
       await aTimeout(0);
       const { focusedItem } = menu;
       assert.equal(focusedItem, menu.items[4], 'menu.items[4] is focused');
@@ -321,11 +376,18 @@ describe('AnypointMenuMixin', () => {
     it('focusing on previous item in empty menu', async () => {
       // This menu will not dispatch an 'iron-items-changed' event.
       const menu = await emptyFixture();
-      MockInteractions.focus(menu);
+      menu.focus();
       // Wait for async focus
       await aTimeout(0);
       // Key press up
-      MockInteractions.keyDownOn(menu, 38, [], 'ArrowUp');
+      const e = new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        code: 'ArrowUp',
+        key: 'ArrowUp',
+      });
+      menu.dispatchEvent(e);
       await aTimeout(0);
       const { focusedItem } = menu;
       assert.equal(focusedItem, undefined, 'no focused item');
@@ -334,11 +396,18 @@ describe('AnypointMenuMixin', () => {
     it('focusing on previous item in all disabled menu', async () => {
       const menu = await onlyDisabledFixture();
       await aTimeout(0);
-      MockInteractions.focus(menu);
+      menu.focus();
       // Wait for async focus
       await aTimeout(0);
       // Key press up
-      MockInteractions.keyDownOn(menu, 38, [], 'ArrowUp');
+      const e = new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        code: 'ArrowUp',
+        key: 'ArrowUp',
+      });
+      menu.dispatchEvent(e);
       await aTimeout(0);
       const { focusedItem } = menu;
       assert.equal(focusedItem, undefined, 'no focused item');
@@ -346,11 +415,18 @@ describe('AnypointMenuMixin', () => {
 
     it('focusing on item using key press skips disabled items', async () => {
       const menu = await disabledFixture();
-      MockInteractions.focus(menu);
+      menu.focus();
       // Wait for async focus
       await aTimeout(0);
       // Key press 'b'
-      MockInteractions.keyDownOn(menu, 66, [], 'b');
+      const e = new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        code: 'KeyB',
+        key: 'b',
+      });
+      menu.dispatchEvent(e);
       await aTimeout(0);
       const { focusedItem } = menu;
       assert.equal(focusedItem, menu.items[2], 'menu.items[2] is focused');
@@ -359,11 +435,18 @@ describe('AnypointMenuMixin', () => {
     it('focusing on item using key press ignores disabled items', async () => {
       const menu = await disabledFixture();
       await aTimeout(0);
-      MockInteractions.focus(menu);
+      menu.focus();
       // Wait for async focus
       await aTimeout(0);
       // Key press 'c'
-      MockInteractions.keyDownOn(menu, 67, [], 'c');
+      const e = new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        code: 'KeyC',
+        key: 'c',
+      });
+      menu.dispatchEvent(e);
       await aTimeout(0);
       const { focusedItem } = menu;
       assert.equal(focusedItem, menu.items[0], 'menu.items[0] is focused');
@@ -371,11 +454,18 @@ describe('AnypointMenuMixin', () => {
 
     it('focusing on item using key press in all disabled items', async () => {
       const menu = await onlyDisabledFixture();
-      MockInteractions.focus(menu);
+      menu.focus();
       // Wait for async focus
       await aTimeout(0);
       // Key press 'c'
-      MockInteractions.keyDownOn(menu, 67, [], 'c');
+      const e = new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        code: 'KeyC',
+        key: 'c',
+      });
+      menu.dispatchEvent(e);
       await aTimeout(0);
       const { focusedItem } = menu;
       assert.equal(focusedItem, undefined, 'no focused item');
@@ -383,13 +473,25 @@ describe('AnypointMenuMixin', () => {
 
     it('focusing on item with multi-char, quick input', async () => {
       const menu = await countriesFixture();
-      MockInteractions.focus(menu);
+      menu.focus();
       // Wait for async focus
       await aTimeout(0);
       // Key press 'u'
-      MockInteractions.keyDownOn(menu, 85, [], 'u');
+      menu.dispatchEvent(new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        code: 'KeyU',
+        key: 'u',
+      }));
       // Key press 'g'
-      MockInteractions.keyDownOn(menu, 71, [], 'g');
+      menu.dispatchEvent(new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        code: 'KeyG',
+        key: 'g',
+      }));
       await aTimeout(0);
       const { focusedItem } = menu;
       assert.equal(focusedItem, menu.items[1], 'menu.items[1] is focused');
@@ -397,25 +499,73 @@ describe('AnypointMenuMixin', () => {
 
     it('focusing on item with multi-char ignoring modifier keys, quick input', async () => {
       const menu = await countriesFixture();
-      MockInteractions.focus(menu);
+      menu.focus();
       // Wait for async focus
       await aTimeout(0);
       // Key press 'u'
-      MockInteractions.keyDownOn(menu, 85, [], 'u');
+      menu.dispatchEvent(new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        code: 'KeyU',
+        key: 'u',
+      }));
       // Key press 'Alt', should be ignored.
-      MockInteractions.keyDownOn(menu, 18, [], 'Alt');
+      menu.dispatchEvent(new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        code: 'AltLeft',
+        key: 'Alt',
+      }));
       // Key press 'Caps Lock', should be ignored.
-      MockInteractions.keyDownOn(menu, 20, [], 'CapsLock');
+      menu.dispatchEvent(new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        code: 'CapsLock',
+        key: 'CapsLock',
+      }));
       // Key press 'Control', should be ignored.
-      MockInteractions.keyDownOn(menu, 17, [], 'Control');
+      menu.dispatchEvent(new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        code: 'ControlLeft',
+        key: 'Control',
+      }));
       // Key press 'Num Lock', should be ignored.
-      MockInteractions.keyDownOn(menu, 144, [], 'NumLock');
+      menu.dispatchEvent(new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        code: 'NumLock',
+        key: 'NumLock',
+      }));
       // Key press 'Scroll Lock', should be ignored.
-      MockInteractions.keyDownOn(menu, 145, [], 'ScrollLock');
+      menu.dispatchEvent(new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        code: 'ScrollLock',
+        key: 'ScrollLock',
+      }));
       // Key press 'Shift', should be ignored.
-      MockInteractions.keyDownOn(menu, 16, [], 'Shift');
+      menu.dispatchEvent(new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        code: 'ShiftLeft',
+        key: 'Shift',
+      }));
       // Key press 'g'
-      MockInteractions.keyDownOn(menu, 71, [], 'g');
+      menu.dispatchEvent(new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        code: 'KeyG',
+        key: 'g',
+      }));
       await aTimeout(0);
       const { focusedItem } = menu;
       assert.equal(focusedItem, menu.items[1], 'menu.items[1] is focused');
@@ -423,11 +573,17 @@ describe('AnypointMenuMixin', () => {
 
     it('focusing on item with bogus attr-for-item-title', async () => {
       const menu = await bogusAttrForItemTitleFixture();
-      MockInteractions.focus(menu);
+      menu.focus();
       // Wait for async focus
       await aTimeout(0);
       // Key press 'i'
-      MockInteractions.keyDownOn(menu, 73, [], 'i');
+      menu.dispatchEvent(new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        code: 'KeyI',
+        key: 'i',
+      }));
       await aTimeout(0);
       const { focusedItem } = menu;
       assert.equal(
@@ -442,7 +598,7 @@ describe('AnypointMenuMixin', () => {
       menu.extraContent.focus();
       await aTimeout(0);
       const menuOwnerRoot =
-        (menu.extraContent.getRootNode && menu.extraContent.getRootNode()) ||
+        /** @type Document */ (menu.extraContent.getRootNode && menu.extraContent.getRootNode()) ||
         document;
       const menuActiveElement = menuOwnerRoot.activeElement;
       assert.equal(
@@ -463,7 +619,7 @@ describe('AnypointMenuMixin', () => {
       menu.items[1].click();
       await aTimeout(0);
       const ownerRoot =
-        (menu.items[1].getRootNode && menu.items[1].getRootNode()) || document;
+        /** @type Document */ (menu.items[1].getRootNode && menu.items[1].getRootNode()) || document;
       const { activeElement } = ownerRoot;
       assert.equal(activeElement, menu.items[1], 'menu.items[1] is focused');
     });
@@ -474,7 +630,7 @@ describe('AnypointMenuMixin', () => {
       menu.items[0].click();
       await aTimeout(0);
       const ownerRoot =
-        (menu.items[0].getRootNode && menu.items[0].getRootNode()) || document;
+        /** @type Document */ (menu.items[0].getRootNode && menu.items[0].getRootNode()) || document;
       const { activeElement } = ownerRoot;
       assert.equal(activeElement, menu.items[0], 'menu.items[0] is focused');
     });
@@ -494,17 +650,35 @@ describe('AnypointMenuMixin', () => {
         }
       });
       // up
-      MockInteractions.keyDownOn(menu.firstElementChild, 38, [], 'ArrowUp');
+      menu.firstElementChild.dispatchEvent(new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        code: 'ArrowUp',
+        key: 'ArrowUp',
+      }));
       // down
-      MockInteractions.keyDownOn(menu.firstElementChild, 40, [], 'ArrowDown');
+      menu.firstElementChild.dispatchEvent(new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        code: 'ArrowDown',
+        key: 'ArrowDown',
+      }));
       // esc
-      MockInteractions.keyDownOn(menu.firstElementChild, 27, [], 'Escape');
+      menu.firstElementChild.dispatchEvent(new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        code: 'Escape',
+        key: 'Escape',
+      }));
       await aTimeout(0);
       assert.equal(menu.firstElementChild.tagName, 'TEST-MENU');
       assert.equal(keyCounter, 0);
     });
 
-    it('empty menus do not unfocus themselves', async () => {
+    it('empty menus do not un-focus themselves', async () => {
       // This menu will not dispatch an 'iron-items-changed' event.
       const menu = await emptyFixture();
       menu.focus();
@@ -535,7 +709,7 @@ describe('AnypointMenuMixin', () => {
       assert.equal(menu.getAttribute('tabindex'), '0');
       menu.disabled = true;
       assert.equal(menu.getAttribute('tabindex'), null);
-      menu.setAttribute('tabindex', 15);
+      menu.setAttribute('tabindex', '15');
       assert.equal(menu.getAttribute('tabindex'), '15');
       menu.disabled = false;
       assert.equal(menu.getAttribute('tabindex'), '15');
@@ -589,11 +763,18 @@ describe('AnypointMenuMixin', () => {
 
     it('shift+tab removes focus', async () => {
       const menu = await countriesFixture();
-      MockInteractions.focus(menu);
+      menu.focus();
       // Wait for async focus
       await aTimeout(0);
       // Key press 'Tab'
-      MockInteractions.keyDownOn(menu, 9, ['shift'], 'Tab');
+      const e = new KeyboardEvent('keydown', {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        code: 'Tab',
+        shiftKey: true,
+      });
+      menu.dispatchEvent(e);
       assert.equal(menu.getAttribute('tabindex'), '-1');
       assert.isTrue(menu._shiftTabPressed);
       assert.equal(menu._focusedItem, null);
@@ -648,21 +829,25 @@ describe('AnypointMenuMixin', () => {
   });
 
   describe('_clearSearchText()', () => {
+    /** @type TestMenu */
     let menu;
     beforeEach(async () => {
       menu = await basicFixture();
     });
 
     it('clears _searchText', () => {
+      // @ts-ignore
       menu._searchText = 'test';
       menu._clearSearchText();
+      // @ts-ignore
       assert.equal(menu._searchText, '');
     });
   });
 
   describe('Items highlighting', () => {
     describe('highlightNext()', () => {
-      let element = /** @type TestMenu */ (null);
+      /** @type TestMenu */
+      let element;
       beforeEach(async () => {
         element = await basicFixture();
       });
@@ -699,7 +884,7 @@ describe('AnypointMenuMixin', () => {
 
       it('highlights item after current selection', () => {
         const item = element.items[1];
-        MockInteractions.focus(item);
+        item.focus();
         element.highlightNext();
         assert.isFalse(element.items[2].classList.contains('highlight'));
       });
@@ -713,7 +898,8 @@ describe('AnypointMenuMixin', () => {
     });
 
     describe('highlightPrevious()', () => {
-      let element = /** @type TestMenu */ (null);
+      /** @type TestMenu */
+      let element;
       beforeEach(async () => {
         element = await basicFixture();
       });
@@ -750,7 +936,7 @@ describe('AnypointMenuMixin', () => {
 
       it('highlights item before current selection', () => {
         const item = element.items[1];
-        MockInteractions.focus(item);
+        item.focus();
         element.highlightPrevious();
         assert.isFalse(element.items[0].classList.contains('highlight'));
       });
@@ -763,10 +949,11 @@ describe('AnypointMenuMixin', () => {
       });
     });
 
-    describe('Signle item menu', () => {
-      let element = /** @type TestMenu */ (null);
+    describe('Single item menu', () => {
+      /** @type TestMenu */
+      let element;
       beforeEach(async () => {
-        element = await singleItenFixture();
+        element = await singleItemFixture();
       });
 
       it('highlights single item with next', () => {
@@ -781,7 +968,8 @@ describe('AnypointMenuMixin', () => {
     });
 
     describe('a11y', () => {
-      let element = /** @type TestMenu */ (null);
+      /** @type TestMenu */
+      let element;
       beforeEach(async () => {
         element = await highlightAriaSelectedFixture();
       });
@@ -791,7 +979,7 @@ describe('AnypointMenuMixin', () => {
         assert.equal(element.items[0].getAttribute('aria-selected'), 'true');
       });
 
-      it('updates aria-selected from dehighlighted item', () => {
+      it('updates aria-selected from de-highlighted item', () => {
         element.highlightNext();
         element.highlightNext();
         assert.equal(element.items[0].getAttribute('aria-selected'), 'false');

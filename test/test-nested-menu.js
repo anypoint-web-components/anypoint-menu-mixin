@@ -2,7 +2,9 @@ import { LitElement, html, css } from 'lit-element';
 import { MenuMixin } from '../index.js';
 import './test-menu.js';
 
-class TestNestedMenu extends MenuMixin(LitElement) {
+/** @typedef {import('./test-menu').TestMenu} TestMenu */
+
+export class TestNestedMenu extends MenuMixin(LitElement) {
   static get styles() {
     return css`
       div {
@@ -20,6 +22,9 @@ class TestNestedMenu extends MenuMixin(LitElement) {
     `;
   }
 
+  /**
+   * @returns {TestMenu}
+   */
   get actualMenu() {
     return this.shadowRoot.querySelector('.actualMenu');
   }

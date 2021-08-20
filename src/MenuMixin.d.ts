@@ -12,11 +12,11 @@ interface MenuMixin extends MultiSelectableMixin, SelectableMixin {
   /**
    * Currently focused in the menu item.
    */
-  readonly focusedItem?: HTMLElement;
+  get focusedItem(): HTMLElement|undefined;
   /**
    * Currently highlighted item.
    */
-  readonly highlightedItem: HTMLElement;
+  get highlightedItem(): HTMLElement|undefined;
 
   _focusedItem?: HTMLElement;
 
@@ -44,6 +44,14 @@ interface MenuMixin extends MultiSelectableMixin, SelectableMixin {
    * @attribute
    */
   useAriaSelected?: boolean;
+  /**
+   * When set the effect of calling `highlightNext()` or `highlightPrevious()`
+   * will be setting `aria-selected` attribute. For proper accessibility use
+   * with the combination with `useAriaSelected` attribute.
+   * @attribute
+   */
+  highlightAriaSelected: boolean;
+  _shiftTabPressed: boolean;
 
   constructor(): void;
   connectedCallback(): void;

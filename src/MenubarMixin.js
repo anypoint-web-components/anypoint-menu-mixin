@@ -35,26 +35,26 @@ const mxFunction = (base) => {
 
     _onLeftKey(e) {
       if (this._isRTL) {
-        this._focusNext();
+        this.focusNext();
       } else {
-        this._focusPrevious();
+        this.focusPrevious();
       }
       e.preventDefault();
     }
 
     _onRightKey(e) {
       if (this._isRTL) {
-        this._focusPrevious();
+        this.focusPrevious();
       } else {
-        this._focusNext();
+        this.focusNext();
       }
       e.preventDefault();
     }
 
     _onKeydown(e) {
-      if (e.key === 'ArrowLeft') {
+      if (e.code === 'ArrowLeft') {
         this._onLeftKey(e);
-      } else if (e.key === 'ArrowRight') {
+      } else if (e.code === 'ArrowRight') {
         this._onRightKey(e);
       } else {
         super._onKeydown(e);

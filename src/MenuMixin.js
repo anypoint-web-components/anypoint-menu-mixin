@@ -39,7 +39,7 @@ const mxFunction = (base) => {
     static get properties() {
       return {
         /**
-         * Currenlty focused in the menu item.
+         * Currently focused in the menu item.
          */
         _focusedItem: { type: Object },
         /**
@@ -220,13 +220,13 @@ const mxFunction = (base) => {
      * @param {KeyboardEvent} e
      */
     _onKeydown(e) {
-      if (e.key === 'ArrowDown') {
+      if (e.code === 'ArrowDown') {
         this._onDownKey(e);
-      } else if (e.key === 'ArrowUp') {
+      } else if (e.code === 'ArrowUp') {
         this._onUpKey(e);
-      } else if (e.key === 'Tab' && e.shiftKey) {
+      } else if (e.code === 'Tab' && e.shiftKey) {
         this._onShiftTabDown();
-      } else if (e.key === 'Escape') {
+      } else if (e.code === 'Escape') {
         this._onEscKey();
       } else {
         this._focusWithKeyboardEvent(e);
@@ -240,7 +240,7 @@ const mxFunction = (base) => {
      * @param {KeyboardEvent} e A key combination event.
      */
     _onUpKey(e) {
-      this._focusPrevious();
+      this.focusPrevious();
       e.preventDefault();
     }
 
@@ -252,7 +252,7 @@ const mxFunction = (base) => {
     _onDownKey(e) {
       e.preventDefault();
       e.stopPropagation();
-      this._focusNext();
+      this.focusNext();
     }
 
     /**
@@ -265,6 +265,9 @@ const mxFunction = (base) => {
       }
     }
 
+    /**
+     * @param {KeyboardEvent} e 
+     */
     _focusWithKeyboardEvent(e) {
       // Make sure that the key pressed is not a modifier key.
       // getModifierState is not being used, as it is not available in Safari
@@ -277,8 +280,7 @@ const mxFunction = (base) => {
         this._clearSearchTextDebouncer = undefined;
       }
       let searchText = this._searchText || '';
-      const key =
-        e.key && e.key.length === 1 ? e.key : String.fromCharCode(e.keyCode);
+      const key = e.key && e.key.length === 1 ? e.key : String.fromCharCode(e.keyCode);
       searchText += key.toLocaleLowerCase();
 
       const searchLength = searchText.length;
