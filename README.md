@@ -1,13 +1,10 @@
-[![Published on NPM](https://img.shields.io/npm/v/@anypoint-web-components/anypoint-menu-mixin.svg)](https://www.npmjs.com/package/@anypoint-web-components/anypoint-menu-mixin)
+# Deprecated
 
-[![Build Status](https://travis-ci.com/anypoint-web-components/anypoint-menu-mixin.svg)](https://travis-ci.com/anypoint-web-components/anypoint-menu-mixin)
+This component has been moved to `anypoint-web-components/awc`.
 
-[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/anypoint-web-components/anypoint-menu-mixin)
-
-# anypoint-menu-mixin
+-----
 
 This is a port of [iron-menu-behavior](https://github.com/PolymerElements/iron-menu-behavior) that works with LitElement and ES6 classes, originally developed by the Polymer team.
-
 
 ## `MenuMixin` and `MenubarMixin`
 
@@ -17,6 +14,7 @@ The mixins extends `MultiSelectableMixin` from `@anypoint-web-components/anypoin
 ## Usage
 
 ### Installation
+
 ```
 npm install @anypoint-web-components/anypoint-menu-mixin --save
 ```
